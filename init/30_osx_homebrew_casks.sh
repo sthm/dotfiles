@@ -19,53 +19,10 @@ brew cask info this-is-somewhat-annoying 2>/dev/null
 # Homebrew casks
 casks=(
   # Applications
-  a-better-finder-rename
-  bettertouchtool
-  charles
-  chromium
-  chronosync
-  dropbox
-  fastscripts
   firefox
-  google-chrome
-  gyazo
-  hex-fiend
-  istat-menus
-  iterm2
-  launchbar
-  macvim
-  moom
-  omnidisksweeper
-  race-for-the-galaxy
-  reaper
-  remote-desktop-connection
+  thunderbird
   sonos
   spotify
-  steam
-  synology-assistant
-  teamspeak-client
-  the-unarchiver
-  todoist
-  totalfinder
-  tower
-  transmission-remote-gui
-  vagrant
-  virtualbox
-  vlc
-  # Quick Look plugins
-  betterzipql
-  qlcolorcode
-  qlmarkdown
-  qlprettypatch
-  qlstephen
-  quicklook-csv
-  quicklook-json
-  quicknfo
-  suspicious-package
-  webp-quicklook
-  # Color pickers
-  colorpicker-developer
-  colorpicker-skalacolor
 )
 
 # Install Homebrew casks.
@@ -76,21 +33,4 @@ if (( ${#casks[@]} > 0 )); then
     brew cask install $cask
   done
   brew cask cleanup
-fi
-
-# Work around colorPicker symlink issue.
-# https://github.com/caskroom/homebrew-cask/issues/7004
-cps=()
-for f in ~/Library/ColorPickers/*.colorPicker; do
-  [[ -L "$f" ]] && cps=("${cps[@]}" "$f")
-done
-
-if (( ${#cps[@]} > 0 )); then
-  e_header "Fixing colorPicker symlinks"
-  for f in "${cps[@]}"; do
-    target="$(readlink "$f")"
-    e_arrow "$(basename "$f")"
-    rm "$f"
-    cp -R "$target" ~/Library/ColorPickers/
-  done
 fi

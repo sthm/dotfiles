@@ -2,8 +2,8 @@
 let mapleader=","
 
 " Move more naturally up/down when wrapping is enabled.
-nnoremap j gj
-nnoremap k gk
+"nnoremap j gj
+"nnoremap k gk
 
 " Local dirs
 if !has('win32')
@@ -31,23 +31,23 @@ autocmd vimrc ColorScheme * :hi Visual guibg=#00588A
 autocmd vimrc ColorScheme * :hi link multiple_cursors_cursor Search
 autocmd vimrc ColorScheme * :hi link multiple_cursors_visual Visual
 
-let g:molokai_italic=0
-colorscheme molokai
-set background=dark
+"let g:molokai_italic=0
+"colorscheme molokai
+set background=light
 
 " Visual settings
-set cursorline " Highlight current line
-set number " Enable line numbers.
-set showtabline=2 " Always show tab bar.
-set relativenumber " Use relative line numbers. Current line is still in status bar.
-set title " Show the filename in the window titlebar.
-set nowrap " Do not wrap lines.
-set noshowmode " Don't show the current mode (airline.vim takes care of us)
+"set cursorline " Highlight current line
+"set number " Enable line numbers.
+"set showtabline=2 " Always show tab bar.
+"set relativenumber " Use relative line numbers. Current line is still in status bar.
+"set title " Show the filename in the window titlebar.
+"set nowrap " Do not wrap lines.
+"set noshowmode " Don't show the current mode (airline.vim takes care of us)
 set laststatus=2 " Always show status line
 
 " Show absolute numbers in insert mode, otherwise relative line numbers.
-autocmd vimrc InsertEnter * :set norelativenumber
-autocmd vimrc InsertLeave * :set relativenumber
+"autocmd vimrc InsertEnter * :set norelativenumber
+"autocmd vimrc InsertLeave * :set relativenumber
 
 " Make it obvious where 80 characters is
 set textwidth=80
@@ -68,7 +68,7 @@ set expandtab " Expand tabs to spaces
 " Reformatting
 set nojoinspaces " Only insert single space after a '.', '?' and '!' with a join command.
 
-" Toggle show tabs and trailing spaces (,c)
+" Toggle show tabs and trailing spaces (,v)
 if has('win32')
   set listchars=tab:>\ ,trail:.,eol:$,nbsp:_,extends:>,precedes:<
 else
@@ -93,20 +93,11 @@ function! ToggleInvisibles()
   endif
 endfunction
 
-set nolist
+set list
 call ToggleInvisibles()
 
-" Trim extra whitespace
-function! StripExtraWhiteSpace()
-  let l = line(".")
-  let c = col(".")
-  %s/\s\+$//e
-  call cursor(l, c)
-endfunction
-noremap <leader>ss :call StripExtraWhiteSpace()<CR>
-
 " Search / replace
-set gdefault " By default add g flag to search/replace. Add g to toggle.
+" set gdefault " By default add g flag to search/replace. Add g to toggle.
 set hlsearch " Highlight searches
 set incsearch " Highlight dynamically as pattern is typed.
 set ignorecase " Ignore case of searches.
@@ -117,13 +108,12 @@ map <silent> <leader>/ <Esc>:nohlsearch<CR>
 
 " Ignore things
 set wildignore+=*.jpg,*.jpeg,*.gif,*.png,*.gif,*.psd,*.o,*.obj,*.min.js
-set wildignore+=*/bower_components/*,*/node_modules/*
 set wildignore+=*/vendor/*,*/.git/*,*/.hg/*,*/.svn/*,*/log/*,*/tmp/*
 
 " Vim commands
 set hidden " When a buffer is brought to foreground, remember undo history and marks.
 set report=0 " Show all changes.
-set mouse=a " Enable mouse in all modes.
+"set mouse=a " Enable mouse in all modes.
 set shortmess+=I " Hide intro menu.
 
 " Splits
@@ -137,20 +127,10 @@ nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
 
 " Buffer navigation
-nnoremap <leader>b :CtrlPBuffer<CR> " List other buffers
-map <leader><leader> :b#<CR> " Switch between the last two files
-map gb :bnext<CR> " Next buffer
-map gB :bprev<CR> " Prev buffer
-
-" Jump to buffer number 1-9 with ,<N> or 1-99 with <N>gb
-let c = 1
-while c <= 99
-  if c < 10
-    execute "nnoremap <silent> <leader>" . c . " :" . c . "b<CR>"
-  endif
-  execute "nnoremap <silent> " . c . "gb :" . c . "b<CR>"
-  let c += 1
-endwhile
+"nnoremap <leader>b :CtrlPBuffer<CR> " List other buffers
+"map <leader><leader> :b#<CR> " Switch between the last two files
+"map gb :bnext<CR> " Next buffer
+"map gB :bprev<CR> " Prev buffer
 
 " Fix page up and down
 map <PageUp> <C-U>
@@ -159,11 +139,8 @@ imap <PageUp> <C-O><C-U>
 imap <PageDown> <C-O><C-D>
 
 " Use Q for formatting the current paragraph (or selection)
-" vmap Q gq
-" nmap Q gqap
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
+vmap Q gq
+nmap Q gqap
 
 " When editing a file, always jump to the last known cursor position. Don't do
 " it for commit messages, when the position is invalid, or when inside an event
@@ -173,95 +150,54 @@ autocmd vimrc BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
-" F12: Source .vimrc & .gvimrc files
-nmap <F12> :call SourceConfigs()<CR>
-
-if !exists("*SourceConfigs")
-  function! SourceConfigs()
-    let files = ".vimrc"
-    source $MYVIMRC
-    if has("gui_running")
-      let files .= ", .gvimrc"
-      source $MYGVIMRC
-    endif
-    echom "Sourced " . files
-  endfunction
-endif
-
 "" FILE TYPES
 
 " vim
 autocmd vimrc BufRead .vimrc,*.vim set keywordprg=:help
 
-" markdown
-autocmd vimrc BufRead,BufNewFile *.md set filetype=markdown
-
 
 " PLUGINS
 
 " Airline
-let g:airline_powerline_fonts = 1 " TODO: detect this?
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_format = '%s '
-let g:airline#extensions#tabline#buffer_nr_show = 1
+"let g:airline_powerline_fonts = 1 " TODO: detect this?
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#buffer_nr_format = '%s '
+"let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#fnamecollapse = 0
 "let g:airline#extensions#tabline#fnamemod = ':t'
 
-" NERDTree
-let NERDTreeShowHidden = 1
-let NERDTreeMouseMode = 2
-let NERDTreeMinimalUI = 1
-map <leader>n :NERDTreeToggle<CR>
-autocmd vimrc StdinReadPre * let s:std_in=1
-" If no file or directory arguments are specified, open NERDtree.
-" If a directory is specified as the only argument, open it in NERDTree.
-autocmd vimrc VimEnter *
-  \ if argc() == 0 && !exists("s:std_in") |
-  \   NERDTree |
-  \ elseif argc() == 1 && isdirectory(argv(0)) |
-  \   bd |
-  \   exec 'cd' fnameescape(argv(0)) |
-  \   NERDTree |
-  \ end
-
 " Signify
-let g:signify_vcs_list = ['git', 'hg', 'svn']
+"let g:signify_vcs_list = ['git', 'hg', 'svn']
 
 " CtrlP.vim
-map <leader>p <C-P>
-map <leader>r :CtrlPMRUFiles<CR>
+"map <leader>p <C-P>
+"map <leader>r :CtrlPMRUFiles<CR>
 "let g:ctrlp_match_window_bottom = 0 " Show at top of window
 
-" Indent Guides
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-
-" Mustache/handlebars
-let g:mustache_abbreviations = 1
 
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
-Plug 'bling/vim-airline'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-eunuch'
-Plug 'scrooloose/nerdtree'
+"Plug 'bling/vim-airline'
+"Plug 'tpope/vim-sensible'
+"Plug 'tpope/vim-surround'
+"Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-vinegar'
+"Plug 'tpope/vim-repeat'
+"Plug 'tpope/vim-commentary'
+"Plug 'tpope/vim-unimpaired'
+"Plug 'tpope/vim-eunuch'
+"Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-Plug 'mhinz/vim-signify'
-Plug 'mattn/emmet-vim'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'chase/vim-ansible-yaml'
-Plug 'wavded/vim-stylus'
-Plug 'klen/python-mode', {'for': 'python'}
-Plug 'terryma/vim-multiple-cursors'
-Plug 'wting/rust.vim', {'for': 'rust'}
+"Plug 'fatih/vim-go', {'for': 'go'}
+"Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+"Plug 'mhinz/vim-signify'
+"Plug 'mattn/emmet-vim'
+"Plug 'mustache/vim-mustache-handlebars'
+"Plug 'chase/vim-ansible-yaml'
+"Plug 'wavded/vim-stylus'
+"Plug 'klen/python-mode', {'for': 'python'}
+"Plug 'terryma/vim-multiple-cursors'
+"Plug 'wting/rust.vim', {'for': 'rust'}
 call plug#end()
