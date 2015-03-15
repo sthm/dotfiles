@@ -7,6 +7,7 @@ is_osx || return 1
 # Homebrew recipes
 recipes=(
   git
+  bash
   bash-completion
 )
 
